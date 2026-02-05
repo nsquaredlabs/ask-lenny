@@ -23,12 +23,37 @@ When this skill is invoked:
 
 1. **Verify Setup**
    - Check that the lenny-index directory exists with config.json and metadata.json
-   - If missing, inform the user to run: `python3 index_transcripts.py`
-   - Check that txtai is installed: `pip3 list | grep txtai`
-   - If missing, inform the user to run: `pip3 install -r requirements.txt`
+   - If missing, show this error:
+     ```
+     ❌ Index not found. Run this setup:
+
+     cd ~/.claude/skills/ask-lenny
+     python3 index_transcripts.py
+     ```
+
+   - Check that the venv exists: `ls ~/.claude/skills/ask-lenny/venv/bin/python`
+   - If missing, show this error with detection of available Python:
+     ```
+     ❌ Virtual environment not set up. Run this one-time setup:
+
+     cd ~/.claude/skills/ask-lenny
+
+     # Use whichever Python 3.10+ you have installed:
+     python3.12 -m venv venv  # or python3.11, python3.10
+
+     source venv/bin/activate
+     pip install --upgrade pip
+     pip install -r requirements.txt
+
+     # Then try /ask-lenny again
+     ```
+
+   - Try to detect which Python 3.10+ is available with:
+     `which python3.12 python3.11 python3.10 2>/dev/null | head -1`
+   - Include the detected version in the error message
 
 2. **Run Query**
-   - Execute: `python3 query.py "<user's question>"`
+   - Execute: `venv/bin/python query.py "<user's question>"`
    - Parse the JSON output to get the top 10 most relevant segments
    - Each result includes: score, guest name, file, chunk number, and text
 
@@ -77,7 +102,9 @@ Use this structure:
 ## Error Handling
 
 - If query.py returns no results, inform the user and suggest rephrasing
-- If query.py errors, display the error and suggest checking the installation
+- If query.py errors, display the error and suggest:
+  - Check that the venv exists: `ls venv/bin/python`
+  - If missing, run the venv setup from README
 - If the question is too vague, ask for clarification before querying
 
 ## Performance

@@ -1,2 +1,5 @@
-txtai>=8.4.0
-sentence-transformers>=2.2.0
+# txtai 9.x from GitHub (requires Python 3.10+)
+# PyPI only has up to 8.4.0, but we need 9.x for index compatibility
+git+https://github.com/neuml/txtai.git
+
+# sentence-transformers is included as a dependency of txtai

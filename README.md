@@ -15,7 +15,7 @@ This Claude Code skill lets you ask natural language questions and get insights 
 
 ## Requirements
 
-- **Python**: 3.7 or higher
+- **Python**: 3.10 or higher (required for txtai 9.x)
 - **Claude Code**: Latest version (install from [claude.ai/code](https://claude.ai/code))
 - **Disk Space**: ~500MB (92MB index + 302 transcript files + dependencies)
 - **Memory**: ~500MB RAM during queries (for model and index)
@@ -23,12 +23,18 @@ This Claude Code skill lets you ask natural language questions and get insights 
 ### Python Dependencies
 
 Installed automatically via `requirements.txt`:
-- `txtai` (>=9.0.0) - Semantic search engine
+- `txtai` (>=8.4.0) - Semantic search engine
 - `sentence-transformers` (>=2.2.0) - Embedding model
 
 **Check your Python version:**
 ```bash
-python3 --version  # Should show 3.7 or higher
+python3 --version  # Should show 3.10 or higher
+```
+
+**If you have Python 3.9 or lower**, you'll need Python 3.10+ installed. On macOS with Homebrew:
+```bash
+brew install python@3.12
+which python3.12  # Verify it's installed
 ```
 
 ## Installation
@@ -37,15 +43,24 @@ python3 --version  # Should show 3.7 or higher
 
 ```bash
 # Clone into your Claude Code skills directory
-git clone https://github.com/yourusername/ask-lenny.git ~/.claude/skills/asklenny
+git clone https://github.com/yourusername/ask-lenny.git ~/.claude/skills/ask-lenny
 
-# Install dependencies
-cd ~/.claude/skills/asklenny
-pip3 install -r requirements.txt
+cd ~/.claude/skills/ask-lenny
+
+# Create virtual environment with Python 3.10+
+# Use python3.12, python3.11, or python3.10 depending on what you have installed
+python3.12 -m venv venv
+
+# Activate venv and install dependencies
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
 
 # Verify the index exists (it's pre-built!)
 ls -lh lenny-index/
 ```
+
+**Why the venv?** The index was built with txtai 9.x which requires Python 3.10+. The venv ensures compatibility regardless of your system Python version.
 
 The index is pre-built and included in the repository, so you can start querying immediately!
 
@@ -153,11 +168,15 @@ ls lenny-index/config.json
 
 If the index is missing, run `python3 index_transcripts.py`.
 
-### "txtai not found" error
+### "txtai not found" or version errors
 
-Install dependencies:
+Make sure you've created the venv with Python 3.10+:
 ```bash
-pip3 install -r requirements.txt
+cd ~/.claude/skills/ask-lenny
+python3.12 -m venv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
 ```
 
 ### Slow queries

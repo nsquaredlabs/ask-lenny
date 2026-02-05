@@ -34,7 +34,7 @@ def query_index(embeddings, metadata, question, limit=10):
 
     # Format results with metadata
     formatted_results = []
-    for score, idx in results:
+    for idx, score in results:
         idx_str = str(idx)
         if idx_str in metadata:
             chunk_data = metadata[idx_str]
