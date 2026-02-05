@@ -1,2 +1,2 @@
-txtai>=9.0.0
+txtai>=8.4.0
 sentence-transformers>=2.2.0
